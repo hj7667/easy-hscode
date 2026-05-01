@@ -2,20 +2,32 @@
 
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
+import { useSession, signIn } from 'next-auth/react';
 
 function ResultContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const query = searchParams.get('q') || '';
   const [result, setResult] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const { data: session, status } = useSession();
 
   useEffect(() => {
     if (!query) return;
+    if (status === 'loading') return; // 세션 로딩 중이면 대기
     fetchHsCode(query);
-  }, [query]);
+  }, [query, status]);
 
   const fetchHsCode = async (q: string) => {
+    if (!session) {
+      const count = parseInt(localStorage.getItem('hs_usage_count') || '0');
+      if (count >= 5) {
+        setShowLoginModal(true);
+        return;
+      }
+    }
+
     setLoading(true);
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/hscode`, {
@@ -25,6 +37,11 @@ function ResultContent() {
       });
       const data = await res.json();
       setResult(data);
+
+      if (!session) {
+        const count = parseInt(localStorage.getItem('hs_usage_count') || '0');
+        localStorage.setItem('hs_usage_count', (count + 1).toString());
+      }
     } catch (err) {
       console.error(err);
     } finally {
@@ -47,7 +64,6 @@ function ResultContent() {
           </div>
           <span className="font-bold text-[#1B3A7A] text-lg">Easy HS Code AI</span>
         </button>
-        
         <a href="https://trade-edge-nine.vercel.app"
           target="_blank"
           className="text-sm bg-white border border-slate-200 text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-50 font-medium"
@@ -62,8 +78,19 @@ function ResultContent() {
 
         {loading && (
           <div className="bg-white rounded-2xl p-12 text-center shadow-sm border border-blue-100">
-            <div className="w-16 h-16 bg-blue-100 rounded-full mx-auto mb-4 animate-pulse"></div>
-            <p className="text-slate-400">AI가 분석 중입니다...</p>
+            <div className="flex flex-col items-center gap-4">
+              <div className="relative w-16 h-16">
+                <div className="absolute inset-0 rounded-full border-4 border-blue-100"></div>
+                <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-[#1B3A7A] animate-spin"></div>
+                <div className="absolute inset-2 rounded-full bg-blue-50 flex items-center justify-center">
+                  <span className="text-[#1B3A7A] text-xs font-bold">HS</span>
+                </div>
+              </div>
+              <div>
+                <p className="text-slate-700 font-bold">AI가 분석 중입니다</p>
+                <p className="text-slate-400 text-sm mt-1">잠시만 기다려주세요...</p>
+              </div>
+            </div>
           </div>
         )}
 
@@ -102,8 +129,7 @@ function ResultContent() {
               >
                 다시 검색
               </button>
-              
-                <a href="https://trade-edge-nine.vercel.app"
+              <a href="https://trade-edge-nine.vercel.app"
                 target="_blank"
                 className="flex-1 bg-[#1B3A7A] text-white py-3 rounded-xl font-bold hover:bg-[#2563EB] transition-colors text-center"
               >
@@ -113,7 +139,7 @@ function ResultContent() {
           </div>
         )}
 
-        {!loading && !result && (
+        {!loading && !result && !showLoginModal && (
           <div className="bg-white rounded-2xl p-12 text-center shadow-sm border border-blue-100">
             <p className="text-slate-400">결과를 불러올 수 없습니다.</p>
           </div>
@@ -124,6 +150,28 @@ function ResultContent() {
         <span>서비스 소개</span>
         <span>개인정보처리방침</span>
       </footer>
+
+      {showLoginModal && (
+        <div
+          className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center"
+          onClick={() => setShowLoginModal(false)}
+        >
+          <div
+            className="bg-white rounded-2xl shadow-lg border border-blue-100 p-10 w-full max-w-sm text-center"
+            onClick={e => e.stopPropagation()}
+          >
+            <p className="text-2xl font-black text-slate-800 mb-2">무료 조회 5건 완료!</p>
+            <p className="text-slate-400 text-sm mb-8">로그인하고 계속 무료로 이용하세요</p>
+            <button
+              onClick={() => signIn('google', { callbackUrl: '/detail?q=' + query })}
+              className="w-full flex items-center justify-center gap-3 border border-slate-200 rounded-xl py-3 px-4 hover:bg-slate-50 transition-colors font-medium text-slate-700"
+            >
+              <img src="https://www.google.com/favicon.ico" className="w-5 h-5" />
+              Google로 계속하기
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
