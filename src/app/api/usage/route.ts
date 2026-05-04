@@ -3,9 +3,8 @@ import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import { authOptions } from "@/lib/authOptions";
 
-// 카운터 조회
 export async function GET() {
-    const session = await getServerSession();
+    const session = await getServerSession(authOptions);  // authOptions 추가
     if (!session?.user?.email) {
         return NextResponse.json({ count: 0 });
     }
@@ -25,7 +24,6 @@ export async function GET() {
     return NextResponse.json({ count: data.count });
 }
 
-// 카운터 증가 + 키워드 로그
 export async function POST(req: NextRequest) {
     const session = await getServerSession(authOptions);
     if (!session?.user?.email) {
@@ -36,7 +34,6 @@ export async function POST(req: NextRequest) {
     const today = new Date().toISOString().split("T")[0];
     const email = session.user.email;
 
-    // 카운터 업데이트
     const usageRef = adminDb.collection("usage").doc(email);
     const doc = await usageRef.get();
     const data = doc.data();
@@ -48,7 +45,6 @@ export async function POST(req: NextRequest) {
 
     await usageRef.set({ date: today, count: newCount });
 
-    // 키워드 로그 저장
     await adminDb.collection("search_logs").add({
         email,
         keyword,
