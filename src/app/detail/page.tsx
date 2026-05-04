@@ -182,10 +182,9 @@ function ResultContent() {
       </main>
 
       <footer className="text-center py-8 text-xs text-slate-400 flex justify-center gap-4">
-        <span>서비스 소개</span>
-        <span>개인정보처리방침</span>
+        <a href="/about" className="hover:text-slate-600">서비스 소개</a>
+        <a href="/privacy" className="hover:text-slate-600">개인정보처리방침</a>
       </footer>
-
       {showLoginModal && (
         <div
           className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center"
