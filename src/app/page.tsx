@@ -1,4 +1,5 @@
 "use client";
+import Image from 'next/image'
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -18,53 +19,39 @@ export default function Home() {
     router.push(`/detail?q=${encodeURIComponent(query)}`);
   };
   const { data: session } = useSession();
-const handleGoogleLogin = () => {
-  const width = 500;
-  const height = 600;
-  const left = window.screenX + (window.outerWidth - width) / 2;
-  const top = window.screenY + (window.outerHeight - height) / 2;
-  
-  window.open(
-    '/login',
-    'Google 로그인',
-    `width=${width},height=${height},left=${left},top=${top}`
-  );
-};
+
   return (
-    <div className="min-h-screen bg-[#F0F4FF]" style={{ fontFamily: "'Pretendard', 'Noto Sans KR', sans-serif" }}>
+    <div className="min-h-screen" style={{ backgroundColor: 'var(--brand-tint)', fontFamily: "'Pretendard', 'Noto Sans KR', sans-serif" }}>
       
       {/* 네비게이션 */}
       <nav className="flex items-center justify-between px-8 py-5">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-[#1B3A7A] rounded-lg flex items-center justify-center">
-            <span className="text-white text-xs font-bold">HS</span>
-          </div>
-          <span className="font-bold text-[#1B3A7A] text-lg">Easy HS Code AI</span>
+       <div className="w-12 h-12 rounded-lg flex items-center justify-center overflow-hidden">
+          <img
+            src="/images/easyHsLogo.png"
+            alt="Easy HS Code AI 로고"
+            width={48}
+            height={48}
+            className="rounded-lg"
+          />
         </div>
-       <div className="flex items-center gap-3">
+          <span className="font-bold text-lg" style={{ color: 'var(--brand-dark)' }}>Easy HS Code AI</span>
+        </div>
+        <div className="flex items-center gap-3">
           {session ? (
             <div className="flex items-center gap-2">
               <span className="text-sm text-slate-600">{session.user?.name}</span>
-              <button 
-                onClick={() => signOut()}
-                className="text-sm text-slate-500 hover:text-slate-700 font-medium"
-              >
+              <button onClick={() => signOut()} className="text-sm text-slate-500 hover:text-slate-700 font-medium">
                 로그아웃
               </button>
             </div>
           ) : (
-            <button 
-              onClick={() => setShowLogin(true)}
-              className="text-sm text-slate-500 hover:text-slate-700 font-medium"
-            >
+            <button onClick={() => setShowLogin(true)} className="text-sm text-slate-500 hover:text-slate-700 font-medium">
               로그인
             </button>
           )}
-          <a 
-            href="https://trade-edge-nine.vercel.app" 
-            target="_blank"
-            className="text-sm bg-white border border-slate-200 text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-50 font-medium"
-          >
+          <a href="https://trade-edge-nine.vercel.app" target="_blank"
+            className="text-sm bg-white border border-slate-200 text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-50 font-medium">
             Trade-Edge 바로가기
           </a>
         </div>
@@ -74,9 +61,10 @@ const handleGoogleLogin = () => {
       <main className="flex flex-col items-center justify-center px-4 pt-24 pb-16">
         
         <div className="text-center mb-12">
-          <h1 className="text-5xl font-black text-[#1B3A7A] leading-tight mb-4">
+          
+          <h1 className="text-5xl font-black leading-tight mb-4" style={{ color: 'var(--brand-dark)' }}>
             상품명만으로 찾는<br />
-            <span className="text-[#2563EB]">3초 HS 코드</span>
+            <span style={{ color: 'var(--brand)' }}>3초 HS 코드</span>
           </h1>
           <p className="text-slate-500 text-lg">
             복잡한 관세율표 대신, 상품 묘사로 정확한 코드를 찾아보세요.
@@ -95,7 +83,10 @@ const handleGoogleLogin = () => {
             />
             <button
               onClick={handleSearch}
-              className="bg-[#1B3A7A] text-white px-6 py-2.5 rounded-xl font-bold text-sm hover:bg-[#2563EB] transition-colors whitespace-nowrap"
+              className="text-white px-6 py-2.5 rounded-xl font-bold text-sm transition-colors whitespace-nowrap"
+              style={{ backgroundColor: 'var(--brand)' }}
+              onMouseEnter={e => e.currentTarget.style.backgroundColor = 'var(--brand-mid)'}
+              onMouseLeave={e => e.currentTarget.style.backgroundColor = 'var(--brand)'}
             >
               분류하기
             </button>
@@ -103,7 +94,7 @@ const handleGoogleLogin = () => {
 
           <div className="flex justify-center mt-6">
             <div className="bg-white/70 backdrop-blur border border-blue-100 rounded-full px-6 py-2 text-sm text-slate-500">
-              현재까지 <span className="font-bold text-[#1B3A7A]">1,245건</span>의 분석이 완료되었습니다
+              현재까지 <span className="font-bold" style={{ color: 'var(--brand-dark)' }}>1,245건</span>의 분석이 완료되었습니다
             </div>
           </div>
         </div>
@@ -121,43 +112,40 @@ const handleGoogleLogin = () => {
         </div>
       </main>
 
-      <footer className="text-center py-8 text-xs text-slate-400 gap-4 flex justify-center">
-        <span>서비스 소개</span>
-        <span>개인정보처리방침</span>
+      <footer className="text-center py-8 text-xs text-slate-400 flex justify-center gap-4">
+        <a href="/about" className="hover:text-slate-600">서비스 소개</a>
+        <a href="/privacy" className="hover:text-slate-600">개인정보처리방침</a>
       </footer>
+
       {showLogin && (
-          <div 
-            className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center"
-            onClick={() => setShowLogin(false)}
-          >
-            <div 
-              className="bg-white rounded-2xl shadow-lg border border-blue-100 p-10 w-full max-w-sm text-center"
-              onClick={e => e.stopPropagation()}
-            >
-              <div className="flex items-center justify-center gap-2 mb-8">
-                <div className="w-10 h-10 bg-[#1B3A7A] rounded-xl flex items-center justify-center">
-                  <span className="text-white font-bold">HS</span>
-                </div>
-                <span className="font-black text-[#1B3A7A] text-xl">Easy HS Code AI</span>
-              </div>
-
-              <h2 className="text-xl font-black text-slate-800 mb-2">로그인</h2>
-              <p className="text-slate-400 text-sm mb-8">로그인하고 무제한으로 조회하세요</p>
-
-              <button
-                onClick={() => signIn('google', { callbackUrl: '/' })}
-                className="w-full flex items-center justify-center gap-3 border border-slate-200 rounded-xl py-3 px-4 hover:bg-slate-50 transition-colors font-medium text-slate-700"
-              >
-                <img src="https://www.google.com/favicon.ico" className="w-5 h-5" />
-                Google로 계속하기
-              </button>
-
-              <p className="text-xs text-slate-400 mt-6">
-                로그인 시 개인정보처리방침에 동의하는 것으로 간주됩니다.
-              </p>
-            </div>
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center"
+        onClick={() => setShowLogin(false)}>
+        <div className="bg-white rounded-2xl shadow-lg border border-blue-100 p-10 w-full max-w-sm text-center"
+          onClick={e => e.stopPropagation()}>
+          <div className="flex items-center justify-center gap-2 mb-8">
+            <Image src="/images/easyHsLogo.png" alt="Easy HS Code AI 로고" width={40} height={40} className="rounded-lg" />
+            <span className="font-black text-xl" style={{ color: 'var(--brand-dark)' }}>Easy HS Code AI</span>
           </div>
-        )}
+
+          <h2 className="text-xl font-black text-slate-800 mb-2">로그인</h2>
+          <p className="text-slate-400 text-sm mb-8">로그인하고 무제한으로 조회하세요</p>
+
+          <button
+            onClick={() => signIn('google', { callbackUrl: '/' })}
+            className="w-full flex items-center justify-center gap-3 border border-slate-200 rounded-xl py-3 px-4 hover:bg-slate-50 transition-colors font-medium text-slate-700"
+          >
+            <img src="https://www.google.com/favicon.ico" className="w-5 h-5" />
+            Google로 계속하기
+          </button>
+
+          <p className="text-xs text-slate-400 mt-6">
+            로그인 시{' '}
+            <a href="/privacy" className="underline hover:text-slate-600">개인정보처리방침</a>
+            에 동의하는 것으로 간주됩니다.
+          </p>
+        </div>
+      </div>
+      )}
     </div>
   );
 }
