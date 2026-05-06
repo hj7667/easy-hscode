@@ -17,6 +17,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Easy HS Code AI",
   description: "AI 기반 HS Code 자동 추론 서비스",
+  verification: {
+    google: "sDFPYWB1ecfKC03FniTBirIjR4_pFVfz2MzOCh1yWAQ",
+  },
   icons: {
     icon: "/images/easyHsLogo.png",
   },
@@ -35,6 +38,7 @@ export const metadata: Metadata = {
     ],
     locale: "ko_KR",
     type: "website",
+    
   },
   twitter: {
     card: "summary_large_image",
