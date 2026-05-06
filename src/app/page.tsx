@@ -59,9 +59,7 @@ export default function Home() {
 
       {/* 메인 */}
       <main className="flex flex-col items-center justify-center px-4 pt-24 pb-16">
-        
         <div className="text-center mb-12">
-          
           <h1 className="text-5xl font-black leading-tight mb-4" style={{ color: 'var(--brand-dark)' }}>
             상품명만으로 찾는<br />
             <span style={{ color: 'var(--brand)' }}>3초 HS 코드</span>
@@ -72,6 +70,9 @@ export default function Home() {
         </div>
 
         <div className="w-full max-w-2xl">
+           <p className="text-xs text-slate-400 mb-2 text-center">
+              💡 CI(Commercial Invoice) 상의 품명 기준으로 입력하세요
+            </p>
           <div className="bg-white rounded-2xl shadow-lg shadow-blue-100 border border-blue-100 flex items-center px-6 py-4 gap-4">
             <input
               type="text"
