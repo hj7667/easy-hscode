@@ -17,6 +17,18 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Easy HS Code AI | AI 기반 HS Code 자동 분류",
   description: "상품명만으로 찾는 3초 HS Code. 복잡한 관세율표 대신 AI가 정확하게 분류해드립니다.",
+  keywords: [
+    "HS Code",
+    "HS Code 조회",
+    "HS Code AI",
+    "AI HS Code 분류",
+    "관세율표",
+    "수출입 HS Code",
+    "HS Code 자동 분류",
+    "HSK",
+    "관세 코드",
+    "CI 품명 분류",
+  ],
   verification: {
     google: "sDFPYWB1ecfKC03FniTBirIjR4_pFVfz2MzOCh1yWAQ",
   },
