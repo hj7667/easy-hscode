@@ -28,6 +28,9 @@ export const metadata: Metadata = {
     "HSK",
     "관세 코드",
     "CI 품명 분류",
+    "hscode",
+    "hs code",
+    "hs-code",
   ],
   verification: {
     google: "sDFPYWB1ecfKC03FniTBirIjR4_pFVfz2MzOCh1yWAQ",

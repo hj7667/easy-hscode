@@ -116,6 +116,9 @@ export default function Home() {
       <footer className="text-center py-8 text-xs text-slate-400 flex justify-center gap-4">
         <a href="/about" className="hover:text-slate-600">서비스 소개</a>
         <a href="/privacy" className="hover:text-slate-600">개인정보처리방침</a>
+        <a href="/blog/what-is-hscode" className="hover:text-slate-600">HS Code란?</a>
+        <a href="/blog/how-to-find-hscode" className="hover:text-slate-600">HS Code 찾는 방법</a>
+        <a href="/blog/hscode-ai" className="hover:text-slate-600">AI HS Code 분류</a>
       </footer>
 
       {showLogin && (

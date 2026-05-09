@@ -20,5 +20,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.5,
     },
+    { 
+      url: 'https://easy-hscode.com/blog/what-is-hscode', 
+      changeFrequency: 'monthly', 
+      priority: 0.8 
+    },
+    { 
+      url: 'https://easy-hscode.com/blog/how-to-find-hscode', 
+      changeFrequency: 'monthly', 
+      priority: 0.8 
+    },
+    { 
+      url: 'https://easy-hscode.com/blog/hscode-ai', 
+      changeFrequency: 'monthly', 
+      priority: 0.8 
+    },
   ]
 }
