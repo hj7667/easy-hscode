@@ -21,12 +21,13 @@ function ResultContent() {
   }, [query, status]);
 
   const fetchHsCode = async (q: string) => {
-  if (!session) {
+  if (!session && process.env.NODE_ENV !== 'development') {
     const count = parseInt(localStorage.getItem('hs_usage_count') || '0');
     if (count >= 5) {
       setShowLoginModal(true);
       return;
     }
+  
   } else {
     // 로그인 유저는 DB에서 카운터 확인
     const res = await fetch('/api/usage');

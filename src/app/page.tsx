@@ -18,7 +18,9 @@ export default function Home() {
   useEffect(() => {
     fetch('/api/stats')
       .then(res => res.json())
-      .then(data => setTotalCount(data.count));
+      .then(data => {
+        if (data.count > 0) setTotalCount(data.count);
+      });
   }, []);
   const handleSearch = () => {
     if (!query.trim()) return;
@@ -99,11 +101,18 @@ export default function Home() {
             </button>
           </div>
 
-          {/* <div className="flex justify-center mt-6">
-            <div className="bg-white/70 backdrop-blur border border-blue-100 rounded-full px-6 py-2 text-sm text-slate-500">
-              현재까지 <span className="font-bold" style={{ color: 'var(--brand-dark)' }}>{totalCount.toLocaleString()}건</span>의 분석이 완료되었습니다
-            </div>
-          </div> */}
+          <div className="flex justify-center mt-6">
+           {session ? (
+              <div className="bg-white/70 backdrop-blur border border-blue-100 rounded-full px-6 py-2 text-sm text-slate-500">
+                안녕하세요, <span className="font-bold" style={{ color: 'var(--brand-dark)' }}>{session.user?.name}</span>님 👋
+              </div>
+            ) : ( 
+              <div className="bg-white/70 backdrop-blur border border-blue-100 rounded-full px-6 py-2 text-sm text-slate-500">
+                🔓 로그인하면 무제한으로 조회할 수 있어요
+              </div>
+            )
+          }
+          </div>
         </div>
 
         <div className="flex flex-wrap gap-2 mt-8 justify-center">
@@ -126,7 +135,7 @@ export default function Home() {
         <a href="/blog/how-to-find-hscode" className="hover:text-slate-600">HS Code 찾는 방법</a>
         <a href="/blog/hscode-ai" className="hover:text-slate-600">AI HS Code 분류</a>
       </footer>
-
+      
       {showLogin && (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center"
         onClick={() => setShowLogin(false)}>
@@ -136,7 +145,6 @@ export default function Home() {
             <Image src="/images/easyHsLogo.png" alt="Easy HS Code AI 로고" width={40} height={40} className="rounded-lg" />
             <span className="font-black text-xl" style={{ color: 'var(--brand-dark)' }}>Easy HS Code AI</span>
           </div>
-
           <h2 className="text-xl font-black text-slate-800 mb-2">로그인</h2>
           <p className="text-slate-400 text-sm mb-8">로그인하고 무제한으로 조회하세요</p>
 
