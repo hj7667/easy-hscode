@@ -21,23 +21,20 @@ function ResultContent() {
   }, [query, status]);
 
   const fetchHsCode = async (q: string) => {
-  if (!session && process.env.NODE_ENV !== 'development') {
-    const count = parseInt(localStorage.getItem('hs_usage_count') || '0');
-    if (count >= 5) {
-      setShowLoginModal(true);
-      return;
-    }
-  
-  } else {
-    // 로그인 유저는 DB에서 카운터 확인
-    const res = await fetch('/api/usage');
-    const data = await res.json();
-    if (data.count >= 20) { // 로그인 유저는 하루 20건
-      alert('오늘 조회 한도를 초과했습니다.');
-      return;
-    }
-  }
-
+   // if (!session && process.env.NODE_ENV !== 'development') {
+  //   const count = parseInt(localStorage.getItem('hs_usage_count') || '0');
+  //   if (count >= 5) {
+  //     setShowLoginModal(true);
+  //     return;
+  //   }
+  // } else {
+  //   const res = await fetch('/api/usage');
+  //   const data = await res.json();
+  //   if (data.count >= 20) {
+  //     alert('오늘 조회 한도를 초과했습니다.');
+  //     return;
+  //   }
+  // }
   setLoading(true);
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/hscode`, {
